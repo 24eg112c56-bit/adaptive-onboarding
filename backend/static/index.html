@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Adaptive Onboarding Engine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 text-white min-h-screen">
+
+  <!-- Header -->
+  <header class="border-b border-gray-800 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-sm font-bold">AI</div>
+      <span class="font-semibold">Adaptive Onboarding Engine</span>
+    </div>
+    <button id="resetBtn" onclick="resetApp()" class="hidden text-sm text-gray-400 hover:text-white transition-colors">← Start Over</button>
+  </header>
+
+  <!-- Upload Section -->
+  <main id="uploadSection" class="px-6 py-12 max-w-xl mx-auto">
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-bold mb-3">Your Personalized <span class="text-indigo-400">Learning Roadmap</span></h1>
+      <p class="text-gray-400">Upload your resume and a job description. Our AI identifies your skill gaps and builds an optimized training pathway.</p>
+    </div>
+
+    <form id="uploadForm" class="flex flex-col gap-6">
+      <!-- Resume Upload -->
+      <div class="flex flex-col gap-2">
+        <label class="text-sm text-gray-400 font-medium">Resume (PDF or TXT)</label>
+        <div class="border-2 border-dashed border-gray-700 rounded-xl p-6 text-center hover:border-indigo-500 transition-colors cursor-pointer"
+          onclick="document.getElementById('resumeInput').click()">
+          <input id="resumeInput" type="file" accept=".pdf,.txt" class="hidden" onchange="updateLabel('resumeInput','resumeLabel')" />
+          <p id="resumeLabel" class="text-gray-500">Click to upload resume</p>
+        </div>
+      </div>
+
+      <!-- JD Upload -->
+      <div class="flex flex-col gap-2">
+        <label class="text-sm text-gray-400 font-medium">Job Description (PDF or TXT)</label>
+        <div class="border-2 border-dashed border-gray-700 rounded-xl p-6 text-center hover:border-indigo-500 transition-colors cursor-pointer"
+          onclick="document.getElementById('jdInput').click()">
+          <input id="jdInput" type="file" accept=".pdf,.txt" class="hidden" onchange="updateLabel('jdInput','jdLabel')" />
+          <p id="jdLabel" class="text-gray-500">Click to upload job description</p>
+        </div>
+      </div>
+
+      <p id="errorMsg" class="text-red-400 text-sm text-center hidden"></p>
+
+      <button type="submit"
+        class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition-colors">
+        Generate My Learning Pathway
+      </button>
+    </form>
+  </main>
+
+  <!-- Loading -->
+  <div id="loadingSection" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+    <div class="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-gray-400">Analyzing your profile and generating pathway...</p>
+  </div>
+
+  <!-- Results -->
+  <div id="resultSection" class="hidden px-6 py-12 max-w-3xl mx-auto space-y-8"></div>
+
+<script>
+  function updateLabel(inputId, labelId) {
+    const file = document.getElementById(inputId).files[0];
+    if (file) {
+      document.getElementById(labelId).textContent = file.name;
+      document.getElementById(labelId).className = 'text-indigo-400 font-medium';
+    }
+  }
+
+  document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const resume = document.getElementById('resumeInput').files[0];
+    const jd = document.getElementById('jdInput').files[0];
+    const errorMsg = document.getElementById('errorMsg');
+
+    if (!resume || !jd) {
+      errorMsg.textContent = 'Please upload both files.';
+      errorMsg.classList.remove('hidden');
+      return;
+    }
+    errorMsg.classList.add('hidden');
+
+    document.getElementById('uploadSection').classList.add('hidden');
+    document.getElementById('loadingSection').classList.remove('hidden');
+    document.getElementById('loadingSection').classList.add('flex');
+
+    const form = new FormData();
+    form.append('resume', resume);
+    form.append('job_description', jd);
+
+    try {
+      const res = await fetch('http://localhost:8001/analyze', { method: 'POST', body: form });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Server error');
+      renderResult(data);
+    } catch (err) {
+      document.getElementById('loadingSection').classList.add('hidden');
+      document.getElementById('uploadSection').classList.remove('hidden');
+      errorMsg.textContent = err.message;
+      errorMsg.classList.remove('hidden');
+    }
+  });
+
+  function renderResult(data) {
+    const p = data.pathway;
+    document.getElementById('loadingSection').classList.add('hidden');
+    document.getElementById('resetBtn').classList.remove('hidden');
+
+    const section = document.getElementById('resultSection');
+    section.classList.remove('hidden');
+
+    const levelColor = {
+      beginner: 'bg-green-900 text-green-300 border border-green-700',
+      intermediate: 'bg-yellow-900 text-yellow-300 border border-yellow-700',
+      advanced: 'bg-red-900 text-red-300 border border-red-700',
+    };
+    const priorityColor = {
+      'must-have': 'bg-indigo-700 text-indigo-100',
+      'nice-to-have': 'bg-gray-700 text-gray-300',
+      'prerequisite': 'bg-purple-900 text-purple-300',
+    };
+
+    let html = `
+      <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <h2 class="text-xl font-bold mb-1">${p.current_role || 'Current Role'} → ${p.target_role || 'Target Role'}</h2>
+        <p class="text-gray-400 text-sm mb-4">Domain: <span class="capitalize text-indigo-300">${p.domain}</span></p>
+        <div class="grid grid-cols-3 gap-4 text-center">
+          <div class="bg-gray-900 rounded-xl p-3"><p class="text-2xl font-bold text-indigo-400">${p.total_modules}</p><p class="text-xs text-gray-500 mt-1">Learning Modules</p></div>
+          <div class="bg-gray-900 rounded-xl p-3"><p class="text-2xl font-bold text-green-400">${p.skills_already_proficient.length}</p><p class="text-xs text-gray-500 mt-1">Skills You Have</p></div>
+          <div class="bg-gray-900 rounded-xl p-3"><p class="text-2xl font-bold text-yellow-400">${p.total_estimated_hours}h</p><p class="text-xs text-gray-500 mt-1">Est. Learning Time</p></div>
+        </div>
+      </div>`;
+
+    if (p.skills_already_proficient.length > 0) {
+      html += `<div class="bg-gray-800 rounded-xl p-5 border border-green-800">
+        <p class="text-sm font-semibold text-green-400 mb-3">Already Proficient — Skip These</p>
+        <div class="flex flex-wrap gap-2">${p.skills_already_proficient.map(s => `<span class="text-xs bg-green-900 text-green-300 border border-green-700 px-3 py-1 rounded-full capitalize">${s}</span>`).join('')}</div>
+      </div>`;
+    }
+
+    html += `<h3 class="text-lg font-semibold">Your Personalized Learning Pathway</h3>`;
+
+    p.modules.forEach((m, i) => {
+      const lc = levelColor[m.target_level] || levelColor.beginner;
+      const pc = priorityColor[m.priority] || priorityColor['nice-to-have'];
+      const courses = m.courses.length === 0
+        ? `<p class="text-sm text-gray-500 italic">No catalog courses — search online.</p>`
+        : m.courses.map(c => `
+            <a href="${c.url}" target="_blank"
+              class="flex items-center justify-between p-3 bg-gray-900 rounded-lg hover:bg-gray-700 transition-colors group">
+              <div>
+                <p class="text-sm font-medium text-indigo-300">${c.title}</p>
+                <p class="text-xs text-gray-500 capitalize">${c.level} · ${c.duration}</p>
+              </div>
+              <span class="text-gray-500 text-xs">↗</span>
+            </a>`).join('');
+
+      html += `
+        <div class="flex gap-4">
+          <div class="flex flex-col items-center">
+            <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-sm shrink-0">${i+1}</div>
+            <div class="w-0.5 bg-gray-700 flex-1 mt-1"></div>
+          </div>
+          <div class="flex-1 mb-6 bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+            <div class="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-gray-700 transition-colors"
+              onclick="this.nextElementSibling.classList.toggle('hidden')">
+              <div class="flex items-center gap-3 flex-wrap">
+                <span class="font-semibold capitalize">${m.skill}</span>
+                <span class="text-xs px-2 py-0.5 rounded-full ${lc}">→ ${m.target_level}</span>
+                <span class="text-xs px-2 py-0.5 rounded-full ${pc}">${m.priority}</span>
+                ${m.is_prerequisite ? '<span class="text-xs px-2 py-0.5 rounded-full bg-purple-900 text-purple-300">prereq</span>' : ''}
+              </div>
+              <span class="text-xs text-gray-400 shrink-0">${m.estimated_hours}h ▼</span>
+            </div>
+            <div class="hidden border-t border-gray-700 px-5 py-4 space-y-2">
+              <p class="text-xs text-gray-400">Current: <span class="text-white">${m.current_level || 'none'}</span> → Target: <span class="text-white">${m.target_level}</span></p>
+              ${courses}
+            </div>
+          </div>
+        </div>`;
+    });
+
+    // Reasoning trace
+    html += `
+      <div class="border border-gray-700 rounded-xl overflow-hidden">
+        <button onclick="this.nextElementSibling.classList.toggle('hidden')"
+          class="w-full flex justify-between items-center px-5 py-4 bg-gray-800 hover:bg-gray-700 text-left transition-colors">
+          <span class="font-semibold text-indigo-300">Reasoning Trace</span>
+          <span class="text-gray-400 text-sm">▼ Show</span>
+        </button>
+        <div class="hidden bg-gray-900 px-5 py-4 space-y-2">
+          ${p.reasoning_trace.map((s, i) => `
+            <div class="flex gap-3 text-sm">
+              <span class="text-indigo-500 font-mono shrink-0">${String(i+1).padStart(2,'0')}</span>
+              <span class="text-gray-300">${s}</span>
+            </div>`).join('')}
+        </div>
+      </div>`;
+
+    section.innerHTML = html;
+  }
+
+  function resetApp() {
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('resultSection').innerHTML = '';
+    document.getElementById('uploadSection').classList.remove('hidden');
+    document.getElementById('resetBtn').classList.add('hidden');
+    document.getElementById('resumeInput').value = '';
+    document.getElementById('jdInput').value = '';
+    document.getElementById('resumeLabel').textContent = 'Click to upload resume';
+    document.getElementById('resumeLabel').className = 'text-gray-500';
+    document.getElementById('jdLabel').textContent = 'Click to upload job description';
+    document.getElementById('jdLabel').className = 'text-gray-500';
+  }
+</script>
+</body>
+</html>
