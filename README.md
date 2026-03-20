@@ -59,10 +59,10 @@ cp .env.example .env
 
 ### 4. Run the server
 ```bash
-python -m uvicorn main:app --port 8000
+python -m uvicorn main:app --port 8001
 ```
 
-Open [http://localhost:8000](http://localhost:8000)
+Open [http://localhost:8001](http://localhost:8001)
 
 ---
 
