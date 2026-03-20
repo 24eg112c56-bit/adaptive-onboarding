@@ -2,7 +2,7 @@
 
 An AI-driven adaptive learning engine that parses a new hire's resume and a target job description, identifies skill gaps, and generates a personalized, optimized training pathway.
 
-🌐 **Live Demo:** [https://ai-adaptive-onboarding.onrender.com](https://ai-adaptive-onboarding.onrender.com)
+🌐 **Live Demo:** [https://adaptive-onboarding.onrender.com](https://adaptive-onboarding.onrender.com)
 
 ---
 
