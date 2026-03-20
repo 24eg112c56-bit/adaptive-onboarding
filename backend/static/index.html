@@ -169,8 +169,11 @@
       </div>`;
 
     if (p.skills_already_proficient.length > 0) {
+      // calculate hours saved
+      let savedHours = p.skills_already_proficient.length * 8;
       html += `<div class="bg-gray-800 rounded-xl p-5 border border-green-800">
-        <p class="text-sm font-semibold text-green-400 mb-3">Already Proficient — Skip These</p>
+        <p class="text-sm font-semibold text-green-400 mb-1">Already Proficient — Skip These</p>
+        <p class="text-xs text-gray-400 mb-3">⏱ Estimated <span class="text-green-400 font-bold">${savedHours}+ hours</span> of redundant training eliminated</p>
         <div class="flex flex-wrap gap-2">${p.skills_already_proficient.map(s => `<span class="text-xs bg-green-900 text-green-300 border border-green-700 px-3 py-1 rounded-full capitalize">${s}</span>`).join('')}</div>
       </div>`;
     }
