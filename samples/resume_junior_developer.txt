@@ -1,0 +1,39 @@
+JOHN SMITH
+Email: john.smith@email.com | Phone: +1-555-0101
+LinkedIn: linkedin.com/in/johnsmith | GitHub: github.com/johnsmith
+
+SUMMARY
+Motivated junior software developer with 1 year of experience building web applications.
+Passionate about learning new technologies and solving real-world problems.
+
+EDUCATION
+Bachelor of Science in Computer Science
+State University, 2023
+GPA: 3.4/4.0
+
+EXPERIENCE
+Junior Web Developer — TechStartup Inc. (Jan 2023 – Present)
+- Built frontend pages using HTML, CSS, and basic JavaScript
+- Assisted in writing Python scripts for data processing
+- Used Git for version control and collaborated on GitHub
+
+Intern — CodeBase Solutions (Jun 2022 – Dec 2022)
+- Developed simple REST APIs using Flask
+- Wrote SQL queries for MySQL database
+- Participated in Agile sprint meetings
+
+SKILLS
+- Programming: Python (beginner), JavaScript (beginner), HTML, CSS
+- Databases: MySQL, basic SQL
+- Tools: Git, GitHub, VS Code
+- Frameworks: Flask (beginner)
+- Soft Skills: Communication, Teamwork
+
+PROJECTS
+Personal Portfolio Website
+- Built using HTML, CSS, JavaScript
+- Deployed on GitHub Pages
+
+Todo App
+- Python Flask backend with SQLite database
+- Basic CRUD operations

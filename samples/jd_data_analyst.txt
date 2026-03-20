@@ -1,0 +1,36 @@
+JOB TITLE: Data Analyst
+
+COMPANY: FinanceFlow Corp
+LOCATION: Hybrid — Bangalore, India
+EXPERIENCE: 2+ years
+
+ABOUT THE ROLE
+We are hiring a Data Analyst to help us make data-driven decisions.
+You will work closely with business teams to analyze data, build dashboards,
+and provide actionable insights.
+
+RESPONSIBILITIES
+- Analyze large datasets to identify trends and patterns
+- Build dashboards and reports using Power BI or Tableau
+- Write complex SQL queries to extract and transform data
+- Work with Python for data cleaning and automation
+- Present findings to non-technical stakeholders
+- Collaborate with engineering teams on data pipelines
+
+REQUIRED SKILLS (Must-Have)
+- SQL: Advanced — complex joins, window functions, stored procedures
+- Python: Intermediate — pandas, numpy, data manipulation
+- Data Analysis: Advanced — statistical analysis, trend identification
+- Excel: Advanced — pivot tables, VLOOKUP, data visualization
+- Communication: Strong — ability to present to business stakeholders
+- Project Management: Basic — task tracking, meeting deadlines
+
+NICE-TO-HAVE
+- Machine Learning: basic predictive modeling
+- Leadership: ability to guide junior analysts
+- AWS: basic cloud data services
+
+COMPENSATION
+- CTC: 8-14 LPA
+- Annual bonus
+- Flexible work hours

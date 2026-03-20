@@ -1,0 +1,40 @@
+JOB TITLE: Senior Machine Learning Engineer
+
+COMPANY: DataTech Solutions
+LOCATION: Remote / Hybrid
+EXPERIENCE REQUIRED: 4+ years
+
+ABOUT THE ROLE
+We are looking for a Senior Machine Learning Engineer to join our AI team.
+You will design, build, and deploy machine learning models at scale to solve
+complex business problems across our product suite.
+
+RESPONSIBILITIES
+- Design and implement machine learning pipelines end-to-end
+- Build and optimize deep learning models for NLP and computer vision tasks
+- Deploy models to production using Docker and Kubernetes
+- Collaborate with data engineers to build robust data pipelines
+- Mentor junior engineers and conduct code reviews
+- Work with AWS cloud infrastructure for model training and serving
+
+REQUIRED SKILLS (Must-Have)
+- Python: Advanced level, 4+ years experience
+- Machine Learning: Advanced — scikit-learn, model evaluation, feature engineering
+- Deep Learning: Intermediate — TensorFlow or PyTorch
+- NLP: Intermediate — text classification, embeddings, transformers
+- SQL: Intermediate — complex queries, data analysis
+- Docker: Intermediate — containerization and deployment
+- Git: Intermediate — branching, pull requests, code review
+- Data Analysis: Advanced — pandas, numpy, statistical analysis
+
+NICE-TO-HAVE SKILLS
+- Kubernetes: container orchestration
+- AWS: cloud deployment and MLOps
+- Leadership: team mentoring experience
+- Project Management: Agile/Scrum experience
+
+WHAT WE OFFER
+- Competitive salary $120,000 - $160,000
+- Remote-first culture
+- Learning & development budget
+- Health insurance
