@@ -25,6 +25,10 @@ app.add_middleware(
 def health():
     return {"status": "ok"}
 
+@app.get("/")
+def serve_frontend():
+    return FileResponse(os.path.join(os.path.dirname(__file__), "static", "index.html"))
+
 @app.post("/analyze")
 async def analyze(
     resume: UploadFile = File(...),
@@ -60,9 +64,7 @@ async def analyze(
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
-# Serve frontend
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
-@app.get("/")
-def serve_frontend():
-    return FileResponse("static/index.html")
+# Static files last
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
